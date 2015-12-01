@@ -1,0 +1,35 @@
+//So, I didn't get this turned in on time, but I didn't want to forget what I planned to do so...
+//Good Idea: use moving average to smooth data
+//Lazy Idea: take average of smoothed data to determine presence or absence of signal using basic scoring matrix.
+//            essentially, I was assuming that a positive signal would give a positive average, and a negative signal would give a
+//            negative average--not the greatest, I'll admit
+//There are obviously better ways to do this lol
+
+
+set	x	  y	            Moving Average		Average of MA	Decision	Scoring Matrix														
+1	  1	  0.02780561										
+1	  2	  0.196316651							                                Values					            Decision
+1	  3	  -0.252110647	-0.070006431	    -0.46562816	-1		      av of MA 	>0.05		        	=	1
+1	  4	  -0.536080585	-0.345725694					                    av of MA 	<0.05 and >-0.05	=	0
+1	  5	  0.214036814	  -0.71873725					                      av of MA 	<-0.05	      		=	-1
+1	  6	  -1.350790702	-1.011711276																		
+1	  7	  -1.668741129	-1.042077525																		
+1	  8	  -1.716980779	-0.697233786																		
+1	  9	  -0.68791183	  -0.313483992																		
+1	  10	 1.938255509	-0.229782484																		
+1	  11	 0.567958271	0.135874307																		
+1	  12	 -1.250233591	0.195398954																		
+1	  13	 0.111303176	-0.222701969																		
+1	  14	-0.390288593	-0.550026692																		
+1	  15	-0.152249109	-0.461881955																		
+1	  16	-1.068665343	-0.760891497																		
+1	  17	-0.809509908	-0.930023379																		
+1	  18	-1.38374453	  -0.886943409																		
+1	  19	-1.235948007	-0.571745384																		
+1	  20	0.063150742	  -0.379915268																		
+1	  21	0.507324784	  -0.27696408																		
+1	  22	0.14964067	  -0.150457851																		
+1	  23	-0.86898859	  -0.461709028																		
+1	  24	-0.603416862	-0.493073834																		
+1	  25	-1.493105142																			
+1	  26	0.350500754																			
