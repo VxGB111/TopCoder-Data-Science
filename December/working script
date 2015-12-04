@@ -1,0 +1,80 @@
+import java.io.*;
+import java.util.*;
+
+public class DataScienceDec15MainFile {
+	
+	public static void main(String[] args) throws FileNotFoundException, IOException
+	{
+		//use data in file C:\Users\BARCLAYSF\Desktop\testdata.csv
+        //get the number of lines in file to initialize arrays
+        BufferedReader reader = new BufferedReader(new FileReader("C:/Users/BARCLAYSF/Desktop/testdata.csv"));
+        int numlines = 0;
+        	while (reader.readLine() != null) numlines++;
+        reader.close();
+        System.out.println((int)numlines);
+        
+        //initialize arrays
+        int yupyup = numlines * 3;
+        
+        //int[] set = new int[numlines];
+        //int[] x = new int[numlines];
+         String [] alldata = new String[yupyup];
+        
+        //read lines from file into arrays
+      
+        //List<String> l1 = new ArrayList<String>();
+       // List<Integer> l2 = new ArrayList<Integer>();
+       // List<Long> l3 = new ArrayList<Long>();
+
+        int i = 0;
+        BufferedReader CSV = 
+                new BufferedReader(new FileReader("C:/Users/BARCLAYSF/Desktop/testdata.csv"));
+
+          String data = CSV.readLine();
+
+          while (data != null){
+              String[] dataArray = data.split(",");
+              for (String item:dataArray) {
+                alldata[i] = dataArray[0];
+        
+                data = CSV.readLine(); // Read next line of data.
+                i++;
+                
+            }
+        
+          }
+        
+        
+       // Scanner s = new Scanner(new FileReader("C:/Users/BARCLAYSF/Desktop/testdata.csv"));
+        //s.useDelimiter(",");
+        //System.out.println("file read");
+        
+        	//while (s.hasNext()) {
+        		
+        		//y.add(s.toString());
+        		//l2.add(s.nextInt());
+        		//l3.add(s.nextLong());
+        		//System.out.println("line read");
+        	//}
+
+        //s.close();
+
+       // System.out.print("done");  
+        //System.out.println(l2);  
+       // System.out.println(l3);
+
+
+       // ArrayList<Integer> al = new ArrayList<Integer>(); // type declared ArrayList
+        // 
+       // int[] ia = new int[al.size()];
+       // for (int i=0; i<ia.length; i++) {
+       //    ia[i] = al.get(i);
+       // }
+               System.out.println(Arrays.toString(alldata));
+        
+	System.out.println("\n successful")
+	//check for successful execution of program
+	;
+		
+	}	
+}
