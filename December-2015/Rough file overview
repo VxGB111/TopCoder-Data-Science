@@ -1,1 +1,113 @@
-add data
+//Topcoder Data Science Fun Challenge--December 2015
+//VxGB111
+//Just calculating moving means in java for fun
+//Yes, I know some of these should be methods...
+//cut me some slack, I haven't programmed in java in forever O.o
+//
+
+import java.io.*;
+import java.util.*;
+
+public class DataScienceDec15MainFile {
+	
+	public static void main(String[] args) throws FileNotFoundException, IOException
+	{
+		 //Define ArrayLists to hold data without need for prior knowledge of array size
+		 ArrayList<Integer> setlist = new ArrayList<Integer>();
+	     ArrayList<Integer> xlist = new ArrayList<Integer>();
+	     ArrayList<Double> ylist = new ArrayList<Double>();
+		
+		//define file
+		File f = new File ("path/filename.wtf");
+        
+        //for reading file
+        BufferedReader myreader = new BufferedReader(new FileReader(f));
+        
+        //start with first line in file
+        String eachline = myreader.readLine();
+            
+        	//while loop for reading data and adding into arraylist
+        	while (eachline != null)
+        	{
+        		//System.out.println(eachline);
+        		String[] data = eachline.split(",");
+        		int miniset = Integer.parseInt(data[0]);
+        		//System.out.println((int)miniset);
+        		int minix = Integer.parseInt(data[1]);
+        		double miniy = Double.parseDouble(data[2]);
+        		setlist.add(miniset);
+        		xlist.add(minix);
+        		ylist.add(miniy);
+        		eachline = myreader.readLine();
+        	}
+        
+        //close file
+        myreader.close();
+    
+        //--stuff for double checking myself--
+        //Checking that my values got into arraylist
+        //for (Double s : y)
+        //{
+    	//int i = y.indexOf(s);
+    	//System.out.println((Double)s);
+    	//}
+        
+        //change arraylists back into arrays
+        Integer[] set = setlist.toArray(new Integer[setlist.size()]); 
+        Integer[] x = xlist.toArray(new Integer[xlist.size()]);
+        Double[] y = ylist.toArray(new Double[ylist.size()]);
+        
+        //check again
+        //int c = set[12];
+        //int b = x[12];
+        //double a = y[12];
+        //System.out.format("%d %d, %f", c, b, a); // -->  "May 29, 2006"
+      
+        ArrayList<Double> yMMList = new ArrayList<Double>();
+        ArrayList<Integer> xMMList = new ArrayList<Integer>();
+        ArrayList<Integer> setMMList = new ArrayList<Integer>();
+        
+        	//Calculate my moving means
+        	//---still working on this part---
+        	int n = set.length;
+        	for( int i = 0; i<=n; i++)
+        	{	int setindex = Arrays.asList(set).indexOf(i);	//gets the location of the first instance of a value
+        		int j = i+1;
+        		int nextindex = Arrays.asList(set).indexOf(j);
+        		
+        		int lengthofcount = nextindex - setindex;
+        		int check1 = setindex - 2;
+        		int check2 = setindex + 2;
+        		
+        		
+        		//not finished
+        		//while (check1)
+        			
+        			//for (int k=0; k==lengthofcount; k++){
+        			//	double mmy = (y[setindex-2] + y[setindex-1] + y[setindex] + y[setindex+1] + y[setindex+2])/5;
+        			//	yMMList.add(mmy);
+        			//	xMMList.add(x[setindex]);
+        			//	setMMList.add(set[setindex]);
+        			
+        			//Check if it's working
+        			//	for (Double s : yMMList)
+        			//		{
+        			//		int m = yMMList.indexOf(s);
+        			//		System.out.println((Double)s);
+        			//		}
+        			
+        			
+        			
+        	//		}
+        		
+        	}
+        
+        
+    //check for successful execution of global program
+	System.out.println("\n\n global program successful");
+	
+	
+	//close program
+	}	
+//close class
+}
