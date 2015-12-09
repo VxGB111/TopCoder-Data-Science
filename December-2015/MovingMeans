@@ -1,1 +1,161 @@
+//Topcoder Data Science Fun Challenge--December 2015
+//VxGB111
+//Just calculating moving means in java for fun
+//Yes, I know some of this should be methods... O.o
+//
 
+package TopcoderDS;
+
+
+import java.io.*;
+import java.util.*;
+
+public class testclass {
+
+	public static void main(String[] args) throws FileNotFoundException, IOException
+	{
+		 //Define ArrayLists to hold data without need for prior knowledge of array size
+		 ArrayList<Integer> setlist = new ArrayList<Integer>();
+	     ArrayList<Integer> xlist = new ArrayList<Integer>();
+	     ArrayList<Double> ylist = new ArrayList<Double>();
+		
+		//define file
+		File f = new File ("Filepath\\filename.csv");
+      
+		//for reading file
+      BufferedReader myreader = new BufferedReader(new FileReader(f));
+      
+      //start with first line in file
+      String eachline = myreader.readLine();
+          
+      	//while loop for reading data and adding into arraylist
+      	while (eachline != null)
+      	{
+      		//System.out.println(eachline);
+      		String[] data = eachline.split(",");
+      		int miniset = Integer.parseInt(data[0]);
+      		//System.out.println((int)miniset);
+      		int minix = Integer.parseInt(data[1]);
+      		double miniy = Double.parseDouble(data[2]);
+      		setlist.add(miniset);
+      		xlist.add(minix);
+      		ylist.add(miniy);
+      		eachline = myreader.readLine();
+      	}
+      
+      //close file
+      myreader.close();
+  
+      //--stuff for double checking myself--
+      //Checking that my values got into arraylist
+      //for (Double s : y)
+      //{
+  	//int i = y.indexOf(s);
+  	//System.out.println((Double)s);
+  	//}
+      
+      //change arraylists back into arrays
+      Integer[] set = setlist.toArray(new Integer[setlist.size()]); 
+      Integer[] x = xlist.toArray(new Integer[xlist.size()]);
+      Double[] y = ylist.toArray(new Double[ylist.size()]);
+      
+      //check again
+      //int c = set[12];
+      //int b = x[12];
+      //double a = y[12];
+      //System.out.format("%d %d, %f", c, b, a); // -->  "May 29, 2006"
+    
+      ArrayList<Double> yMMList = new ArrayList<Double>();
+      ArrayList<Integer> xMMList = new ArrayList<Integer>();
+      ArrayList<Integer> setMMList = new ArrayList<Integer>();
+      
+      	//Calculate my moving means
+      	int n = set.length;
+      	
+      	for( int i = 1; i<=n; i++)
+      	{	
+      		int setindex = Arrays.asList(set).indexOf(i);	//gets the location of the first instance of a value
+      			
+      			if (setindex!= -1) {
+      				//System.out.println((int)setindex);
+      				int z1 = setindex+2;
+      				//int z2 = setindex + 7; //for use with test data
+      				int z2 = setindex + 97;	//for use in data analysis
+      				//System.out.println((int)z1);
+      				//System.out.println((int)z2);
+      				
+      				for (int z=z1; z<=z2; z++){
+      					double mmy;
+      					mmy = (y[z-2] + y[z-1] + y[z] + y[z+1] + y[z+2])/5;	
+      					xMMList.add(x[z]);
+      					setMMList.add(set[z]);
+      					yMMList.add(mmy);
+      				} //close for--inner
+      				
+      			} //close if
+      		
+      		}//close for--outer
+      
+        //--stuff for double checking myself--
+        //Checking that my values got into arraylist
+        /*
+        for (Double s : yMMList)
+        {
+    	int i = yMMList.indexOf(s);
+    	System.out.println((Double)s);
+    	}
+        
+        for (Integer s : xMMList)
+        {
+    	int i = xMMList.indexOf(s);
+    	System.out.println((Integer)s);
+    	}
+        for (Integer s : setMMList)
+        {
+    	int i = setMMList.indexOf(s);
+    	System.out.println((Integer)s);
+    	}
+          */    	
+   	
+		//transfer to arrays + Initialize array size
+      	Integer[] xMMListArray = xMMList.toArray(new Integer[xMMList.size()]);
+      	Integer[] setMMListArray = setMMList.toArray(new Integer[setMMList.size()]);
+      	Double[] yMMListArray = yMMList.toArray(new Double[yMMList.size()]);
+      	//
+      	
+      	
+      	int len = xMMListArray.length;
+      	//System.out.println((int)len);
+      	      	
+
+      	//create file for printing data
+      	String path = "Filepath\\FileOutput.csv";
+      	File f2 = new File(path);
+      	if(f2.createNewFile())
+      		System.out.println("file created");
+      	else 
+      		System.out.println("file not created");
+    
+      	
+      	//write to file
+      	BufferedWriter writer = null;
+        String lineSep = System.getProperty("line.separator");
+       
+        writer = new BufferedWriter(new FileWriter(path));
+
+             for (int i = 0; i < len; i++)
+             {
+            	 writer.write(setMMListArray[i] + "," + xMMListArray[i] + "," + yMMListArray[i] + lineSep);
+                  
+             } //end for
+             
+             writer.close();
+                    
+      	      	 
+        //check for successful execution of global program
+    	System.out.println("\n\n global program successful");
+    	
+	//close program
+	}	
+//close class
+}
