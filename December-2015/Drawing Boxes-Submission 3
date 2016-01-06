@@ -1,0 +1,328 @@
+package TopcoderDS;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class submission3 {
+	
+
+	    public static void main(String[] args) throws IOException { 
+	    	
+	    	
+	   	 //Define ArrayLists to hold data without need for prior knowledge of array size
+			 ArrayList<Integer> setlist = new ArrayList<Integer>();
+		     ArrayList<Double> xlist = new ArrayList<Double>();
+		     ArrayList<Double> ylist = new ArrayList<Double>();
+			
+			//define file
+			File f = new File ("C:\\Users\\BARCLAYSF\\Desktop\\TopCoderMovMeansDataOutput.csv");
+	    
+			//for reading file
+	    BufferedReader myreader = new BufferedReader(new FileReader(f));
+	    
+	    //start with first line in file
+	    String eachline = myreader.readLine();
+	        
+	    	//while loop for reading data and adding into arraylist
+	    	while (eachline != null)
+	    	{
+	    		//System.out.println(eachline);
+	    		String[] data = eachline.split(",");
+	    		int miniset = Integer.parseInt(data[0]);
+	    		//System.out.println((int)miniset);
+	    		double minix = Double.parseDouble(data[1]);
+	    		double miniy = Double.parseDouble(data[2]);
+	    		setlist.add(miniset);
+	    		xlist.add(minix);
+	    		ylist.add(miniy);
+	    		eachline = myreader.readLine();
+	    	}
+	    
+	    //close file
+	    myreader.close();
+	    	
+	    	
+	    Integer[] set = setlist.toArray(new Integer[setlist.size()]); 
+	    Double[] x = xlist.toArray(new Double[xlist.size()]);
+	    Double[] y = ylist.toArray(new Double[ylist.size()]);
+	    
+	    	    	
+	    	
+	    	//---------------------------------------------------------------------
+	    ArrayList<Integer> setforfile = new ArrayList<Integer>();
+	    ArrayList<Double> vy1list = new ArrayList<Double>();
+	    ArrayList<Double> vx1list = new ArrayList<Double>();
+	    ArrayList<Double> vy2list = new ArrayList<Double>();
+	    ArrayList<Double> vx2list = new ArrayList<Double>();
+	    ArrayList<Double> vy3list = new ArrayList<Double>();
+	    ArrayList<Double> vx3list = new ArrayList<Double>();
+	    ArrayList<Double> vy4list = new ArrayList<Double>();
+	    ArrayList<Double> vx4list = new ArrayList<Double>();
+	    
+	    	//---------------------------------------------------------------------
+    	
+    	for( int i = 1; i<=200; i++)
+    		{	
+    		int setindex = Arrays.asList(set).indexOf(i);	//gets the location of the first instance of a value
+    		//int b = i+1;
+    		//int nextindex = Arrays.asList(set).indexOf(b);	
+    		int nextindex = setindex + 95;
+    		
+    		
+    			if (setindex != -1) 
+    				{						//walking through each set
+    				int z1 = setindex;
+    				int z2 = nextindex;	//for use in data analysis
+    				double MAXN = nextindex-setindex; 
+    				double sumx = 0.0;
+    				double sumy = 0.0;
+    				double sumx2 = 0.0;
+    				ArrayList<Double> alist = new ArrayList<Double>();  				
+    				
+    						for (int z=z1; z<=z2; z++)
+    							{				//Calculations for actual xs and ys
+    							sumx  = sumx + x[z];
+    							sumx2 = sumx2 + (x[z] * x[z]);
+    							sumy  = sumy + y[z];
+    													//Create new array of local y values
+    							
+    							//System.out.println((double)sumx + ","  + (double)sumy);
+    							} //end for
+    				
+    						//System.out.println((double)sumy);
+    				
+    						
+    				// Find the maximum value of y array
+    				
+    				double xbar = sumx / MAXN;
+    			    double ybar = sumy / MAXN;
+    			    System.out.println((double)ybar);
+
+    			    // second pass: compute summary statistics
+    			    double xxbar = 0.0, yybar = 0.0, xybar = 0.0;
+    			    int j1 = setindex;
+    				int j2 = setindex + 95;	//for use in data analysis
+    				
+    				double residual =0;		
+    				
+    						for (int j = j1; j < j2; j++) 
+    							{
+    							xxbar += (x[j] - xbar) * (x[j] - xbar);
+    							yybar += (y[j] - ybar) * (y[j] - ybar);
+    							xybar += (x[j] - xbar) * (y[j] - ybar);
+    							residual = y[j] - ybar;
+    							alist.add(residual);
+    			      			}
+    			    
+    				Double[] a = alist.toArray(new Double[alist.size()]);
+    				double max = a[0];
+    		        		for (int counter = 1; counter < a.length; counter++)
+    		        			{
+    		        					if (a[counter] > max)
+    		        						{
+    		        							max = a[counter];
+    		        								
+    		        						}
+
+    		        			}   
+    				
+    				   						
+    						
+    			    double beta1 = xybar / xxbar;
+    			    double beta0 = ybar - beta1 * xbar;
+
+    			        // print results
+    			        System.out.println("y   = " + beta1 + " * x + " + beta0);
+
+    			        // analyze results
+    			    int MAX = nextindex-setindex;
+    			    int df = MAX - 2;
+    			    double rss = 0.0;      // residual sum of squares
+    			    double ssr = 0.0;      // regression sum of squares
+    			    
+    			    int k1 = setindex;
+    				int k2 = setindex + 95;	//for use in data analysis
+    			    
+    			    		for (int k = k1; k < k2; k++) 
+    			    			{
+    			    			double fit = beta1*x[k] + beta0;
+    			    			rss += (fit - y[k]) * (fit - y[k]);
+    			    			ssr += (fit - ybar) * (fit - ybar);
+    			    			} //close for
+    			    		
+    			    		
+    			     double R2    = ssr / yybar;
+    			     double svar  = rss / df;
+    			     double svar1 = svar / xxbar;
+    			     double svar0 = svar/MAX + xbar*xbar*svar1;
+    			     
+    			     
+    			     
+    			     //----------------------------------------------------
+    			     /* Add constraints
+    			     	noise sd = 75
+    			     	slope min = -1, max = 1
+    			     	intercept min= -50, max = 50
+    			     */
+    			     
+    			     	    			     
+    			     double x1 = 101;			//for x1 and x2
+    			     double x2 = 200;			//for x3 and x4
+    			     
+    			     double mmax = 1;
+    			     double mmin = -1;
+    			     double bmax = 50;
+    			     double bmin = -50;
+    			     double b;
+    			     double m;
+    			     double sd = 150;
+    			     double deviation;
+    			     
+    			     // Adding constraints to y-intercept
+    			     //if beta0 falls within constraints--beta0 value is used
+    			     //if beta0 falls outside constraints--max/min values are used
+    			     	if( beta0 > bmin && beta0 < bmax )
+    			     	{b=beta0;
+    			     	}
+    			     	else{
+    			     		if(beta0>bmax){b=bmax;}
+    			     		else{b=bmin;}
+    			     	}
+    			     
+    			     	// Adding constraints to slope
+    			     	if( beta1 > mmin && beta1 < mmax )
+    			     	{m=beta1;
+    			     	}
+    			     	else{
+    			     		if(beta1>mmax){m=mmax;}
+    			     		else{m=mmin;}
+    			     	}
+    			     	
+    			     	// Adding standard deviation of white noise
+    			     	if( sd > max  )
+    			     	{deviation=sd;
+    			     	}
+    			     	else{
+    			     		deviation=max;
+    			     	}
+    			     double y1 = (m * x1) + b;
+    			     double y2 = (m * x2) + b;
+    			     
+    			     System.out.println("y   = " + m + " * x + " + b);
+    			     System.out.println("max residual" + max);
+    			     System.out.println("deviation" + deviation);
+    			     
+    			     double vertex1 = y1 - deviation; // Y bottom left
+    			     double vert1 = x1;			// X bottom left
+    			     
+    			     double vertex2 = y1 + deviation; // Y top left
+    			     double vert2 = x1;			// X top left
+    			     
+    			     double vertex3 = y2 + deviation; // Y top right
+    			     double vert3 = x2;			// X top right
+    			     
+    			     double vertex4 = y2 - deviation; // Y bottom right
+    			     double vert4 = x2;			// X bottom right
+    			     
+    			     
+    			     	setforfile.add(i);
+    				    vy1list.add(vertex1);
+    				    vx1list.add(vert1);
+    				    vy2list.add(vertex2);
+    				    vx2list.add(vert2);
+    				    vy3list.add(vertex3);
+    				    vx3list.add(vert3);
+    				    vy4list.add(vertex4);
+    				    vx4list.add(vert4);
+    			     
+    			     
+    			     
+    			     
+    			     
+    			     
+    			     
+    			     
+    			     // Print Statements
+    			     /*
+    			     System.out.println("R^2                 = " + R2);
+    			     System.out.println("std error of beta_1 = " + Math.sqrt(svar1));
+    			     System.out.println("std error of beta_0 = " + Math.sqrt(svar0));
+    			     svar0 = svar * sumx2 / (MAX * xxbar);
+    			     System.out.println("std error of beta_0 = " + Math.sqrt(svar0));
+    			     System.out.println("SSTO = " + yybar);
+    			     System.out.println("SSE  = " + rss);
+    			     System.out.println("SSR  = " + ssr);
+    			     System.out.println("x1: " + x1 + "  y1: " + y1);
+    			     System.out.println("x2: " + x2 + "  y2: " + y2);
+    			     System.out.println("v1: " + vertex1 + " v2: " + vertex2 + " v3: " + vertex3 + " v4: " + vertex4 );
+    			     */
+    			     
+    			     
+    			     
+    			    
+    			}	//close if
+    			    					
+    		} //close for--outer
+    	
+    	
+    	Integer[] setcolumn = setforfile.toArray(new Integer[setforfile.size()]);
+    	
+    	Double[] Vx1 = vx1list.toArray(new Double[vx1list.size()]);
+    	Double[] Vy1 = vy1list.toArray(new Double[vy1list.size()]);
+	    
+    	Double[] Vx2 = vx2list.toArray(new Double[vx2list.size()]);
+	    Double[] Vy2 = vy2list.toArray(new Double[vy2list.size()]);
+	    
+	    Double[] Vx3 = vx3list.toArray(new Double[vx3list.size()]);
+	    Double[] Vy3 = vy3list.toArray(new Double[vy3list.size()]);
+	    
+	    Double[] Vx4 = vx4list.toArray(new Double[vx4list.size()]);
+	    Double[] Vy4 = vy4list.toArray(new Double[vy4list.size()]);
+	    
+    	
+    	int len = setcolumn.length;
+    	//System.out.println((int)len);
+    	      	
+
+    	//create file for printing data
+    	String path = "C:\\Users\\BARCLAYSF\\Desktop\\VxGB111TopCoderSubmission3.csv";
+    	File f2 = new File(path);
+    	if(f2.createNewFile())
+    		System.out.println("file created");
+    	else 
+    		System.out.println("file not created");
+  
+    	
+    	//write to file
+    	BufferedWriter writer = null;
+      String lineSep = System.getProperty("line.separator");
+     
+      writer = new BufferedWriter(new FileWriter(path));
+
+           for (int i = 0; i < len; i++)
+           {
+          	 writer.write(setcolumn[i] + "," + Vx1[i] + "," + Vy1[i] + "," + Vx2[i] + "," + Vy2[i] + "," + Vx3[i] + "," + Vy3[i] + "," + Vx4[i] + "," + Vy4[i] + lineSep);
+                
+           } //end for
+           
+           writer.close();
+                  
+    	      	 
+      //check for successful execution of global program
+  	System.out.println("\n\n global program successful");
+  	
+    	
+    	
+    				
+    	} //close main
+    			        
+	} //close class
+
+
+
